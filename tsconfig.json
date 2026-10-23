@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "lib": ["esnext"],
+    "module": "nodenext",
+    "types": ["node"],
     "outDir": "./dist",
     "rootDir": "./src",
 
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
 
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -20,10 +17,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    "useUnknownInCatchVariables": true,
 
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts"]

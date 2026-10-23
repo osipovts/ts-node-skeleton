@@ -24,12 +24,22 @@ git push -u origin --all
 git push -u origin --tags
 ```
 
+# Setup
+
+```sh
+nvm use              # Node.js version from .nvmrc
+pnpm install
+cp .env.example .env # required by docker compose
+```
+
 # Run
 
 - `pnpm build && pnpm start`: Compile TypeScript to JavaScript and run the app
 - `pnpm dev`: Run in "watch mode" for development
+- `pnpm typecheck`: Type-check without emitting files
 - `pnpm lint`: Run ESLint to check code style
 - `pnpm lint:fix`: Automatically fix code style issues
+- `pnpm format` / `pnpm format:check`: Format or check all files with Prettier
 
 # Docker
 
@@ -53,6 +63,7 @@ docker compose up -d app-prod --build
 1. Using cached pnpm packages.
 2. Using distroless image in production to minimize image size.
 3. Using non-root user to improve security.
+4. Using `init: true` so the app receives `SIGTERM` and stops gracefully on `docker compose stop`.
 
 # VS Code tips
 

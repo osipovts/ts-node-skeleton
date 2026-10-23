@@ -1,30 +1,24 @@
-ARG NODE_VERSION=24
-ARG PNPM_VERSION=11.3.0
+ARG NODE_VERSION=26
 
 ################################
 # Base
 ################################
 FROM node:${NODE_VERSION}-slim AS base
-ARG PNPM_VERSION
 WORKDIR /app
-ENV PNPM_HOME="/pnpm" \
-    PNPM_STORE_PATH="/pnpm-store" \
-    PATH="/pnpm:$PATH"
-RUN corepack enable && \
-    corepack prepare pnpm@${PNPM_VERSION} --activate && \
+ENV PNPM_STORE_PATH="/pnpm-store"
+# Install the pnpm version pinned in package.json "packageManager" (without the "+sha..." suffix)
+RUN --mount=type=bind,source=package.json,target=/tmp/package.json \
+    npm install -g "$(node -p "require('/tmp/package.json').packageManager.split('+')[0]")" && \
     pnpm config set store-dir "$PNPM_STORE_PATH"
 
 ################################
 # Dependencies
 ################################
 FROM base AS deps
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY .npmrc* ./
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm-store \
-    pnpm fetch && \
-    pnpm install \
-      --frozen-lockfile \
-      --offline
+    pnpm install --frozen-lockfile
 
 ################################
 # Build
@@ -45,7 +39,7 @@ CMD ["pnpm", "dev"]
 ################################
 # Production
 ################################
-FROM gcr.io/distroless/nodejs${NODE_VERSION}-debian12:nonroot AS prod
+FROM gcr.io/distroless/nodejs${NODE_VERSION}-debian13:nonroot AS prod
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/node_modules ./node_modules

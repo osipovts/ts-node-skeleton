@@ -1,6 +1,7 @@
-// eslint.config.mjs
+// eslint.config.js
 import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
+import eslintConfigPrettier from 'eslint-config-prettier/flat';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -25,6 +26,17 @@ export default defineConfig(
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
+      'arrow-body-style': ['error', 'as-needed'],
+      'object-shorthand': 'error',
+      'prefer-arrow-callback': 'error',
+      'prefer-template': 'error',
+    },
+  },
+
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      sourceType: 'commonjs',
     },
   },
 
@@ -38,8 +50,26 @@ export default defineConfig(
     },
     rules: {
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+      '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
+      '@typescript-eslint/explicit-function-return-type': [
+        'error',
+        { allowExpressions: true, allowTypedFunctionExpressions: true },
+      ],
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/naming-convention': [
+        'error',
+        { selector: 'default', format: ['camelCase'], leadingUnderscore: 'allow' },
+        { selector: 'variable', format: ['camelCase', 'UPPER_CASE'], leadingUnderscore: 'allow' },
+        { selector: 'variable', modifiers: ['destructured'], format: null },
+        { selector: 'import', format: ['camelCase', 'PascalCase'] },
+        { selector: 'typeLike', format: ['PascalCase'] },
+        { selector: 'enumMember', format: ['PascalCase'] },
+        {
+          selector: ['objectLiteralProperty', 'typeProperty'],
+          modifiers: ['requiresQuotes'],
+          format: null,
+        },
+      ],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
@@ -48,13 +78,6 @@ export default defineConfig(
           caughtErrorsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/no-misused-promises': 'error',
-      '@typescript-eslint/no-unsafe-assignment': 'error',
-      '@typescript-eslint/no-unsafe-argument': 'error',
-      '@typescript-eslint/no-unsafe-call': 'error',
-      '@typescript-eslint/no-unsafe-member-access': 'error',
-      '@typescript-eslint/no-unsafe-return': 'error',
       '@typescript-eslint/strict-boolean-expressions': 'error',
     },
   },
@@ -63,4 +86,6 @@ export default defineConfig(
     files: ['**/*.{js,mjs,cjs}'],
     extends: [tseslint.configs.disableTypeChecked],
   },
+
+  eslintConfigPrettier,
 );
