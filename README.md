@@ -45,16 +45,16 @@ cp .env.example .env # required by docker compose
 
 Run in dev mode:
 
-```
+```sh
 # install new packages (optional)
 docker compose --profile dev run --rm app-dev pnpm install
 # run
 docker compose --profile dev up app-dev
 ```
 
-Run in prod mode
+Run in prod mode:
 
-```
+```sh
 docker compose up -d app-prod --build
 ```
 
@@ -69,7 +69,7 @@ docker compose up -d app-prod --build
 
 ## Auto-linter on save
 
-To run Prettier and ESLint fix automaticly on file save:
+To run Prettier and ESLint fix automatically on file save:
 
 1. Install `dbaeumer.vscode-eslint` and `esbenp.prettier-vscode` extensions via Extensions (`Ctrl + Shift + X`) or Quick Open (`Ctrl + P`):
 
