@@ -1,4 +1,4 @@
-import { sayHello } from './lib.js';
+import { sayHello } from './lib.ts';
 
 const shutdown = (signal: NodeJS.Signals): void => {
   console.log(`Received ${signal}, shutting down`);

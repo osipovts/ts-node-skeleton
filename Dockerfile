@@ -15,7 +15,7 @@ RUN --mount=type=bind,source=package.json,target=/tmp/package.json \
 # Dependencies
 ################################
 FROM base AS deps
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml* ./
 COPY .npmrc* ./
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm-store \
     pnpm install --frozen-lockfile
